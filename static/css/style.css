@@ -1,0 +1,27 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Libre+Baskerville);
+
+body {
+    text-align: center;
+}
+
+h2 {
+    font-family: 'Libre Baskerville', sans-serif;
+    font-size: 50px;
+}
+p {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 25px;
+    line-height: 160%;
+}
+
+.row {
+    margin-top: 10%;
+}
+
+.verse-num, .chapter-num {
+    font-size: 15px;
+    font-family: 'Libre Baskerville', sans-serif;
+    line-height: 160%;
+    vertical-align: text-top;
+}
