@@ -14,7 +14,12 @@ app.get('/', function(req, res) {
 });
 
 app.get('/:book/:chapter/:verse?', function(req, res) {
-    var passage = req.params.book + ' ' + req.params.chapter + ':' + req.params.verse
+    if (req.params.verse == undefined) {
+        var passage = req.params.book + ' ' + req.params.chapter
+    } else {
+        var passage = req.params.book + ' ' + req.params.chapter + ':' + req.params.verse
+    }
+    console.log(passage);
     var query = {
         'key': 'IP',
         'passage': passage,

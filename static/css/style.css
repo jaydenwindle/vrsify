@@ -8,6 +8,7 @@ body {
 h2 {
     font-family: 'Libre Baskerville', sans-serif;
     font-size: 50px;
+    margin-bottom: 60px;
 }
 p {
     font-family: 'Libre Baskerville', serif;
@@ -15,8 +16,9 @@ p {
     line-height: 160%;
 }
 
-.row {
+.esv {
     margin-top: 10%;
+    margin-bottom: 10%;
 }
 
 .verse-num, .chapter-num {
