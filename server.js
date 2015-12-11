@@ -8,6 +8,9 @@ var app = express();
 app.set('view engine', 'jade');
 app.use(express.static('static'));
 
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+
 // Routes
 app.get('/', function(req, res) {
     res.send("hello world")
@@ -47,7 +50,7 @@ app.get('/:book/:chapter/:verse?', function(req, res) {
 });
 
 // Start app
-var server = app.listen(OPENSHIFT_NODEJS_PORT, function () {
+var server = app.listen(port, ip, function () {
   var host = server.address().address;
   var port = server.address().port;
 
