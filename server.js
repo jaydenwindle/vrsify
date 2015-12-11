@@ -47,7 +47,7 @@ app.get('/:book/:chapter/:verse?', function(req, res) {
 });
 
 // Start app
-var server = app.listen(3000, function () {
+var server = app.listen(OPENSHIFT_NODEJS_PORT, function () {
   var host = server.address().address;
   var port = server.address().port;
 
