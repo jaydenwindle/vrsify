@@ -1,0 +1,16 @@
+extends ./layout.jade
+
+block content
+    h2 this is vrsify
+    p a simple web app for sharing God's word.
+    form
+        select(name='book')
+            each book in booklist
+                option(value=book) #{book}
+        input(type='text', name='chapter', placeholder='1')
+        input(type='text', name='verse', placeholder='1')
+    button#submit Go
+
+block scripts
+    script(src='/js/submit.js')
+        

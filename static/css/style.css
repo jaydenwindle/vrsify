@@ -9,6 +9,7 @@ h2 {
     font-family: 'Libre Baskerville', sans-serif;
     font-size: 50px;
     margin-bottom: 60px;
+    margin-top: 10%;
 }
 p {
     font-family: 'Libre Baskerville', serif;
@@ -17,7 +18,6 @@ p {
 }
 
 .esv {
-    margin-top: 10%;
     margin-bottom: 10%;
 }
 
@@ -26,4 +26,30 @@ p {
     font-family: 'Libre Baskerville', sans-serif;
     line-height: 160%;
     vertical-align: text-top;
+}
+
+input {
+    width: 50px;
+    text-align: center;
+}
+
+input, select {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;
+}
+
+:-ms-input-placeholder {
+   text-align: center;
 }
