@@ -35,7 +35,7 @@ var books = [
 // Routes
 app.get('/', function(req, res) {
     res.render('index', {
-        pageTitle: 'versify'
+        pageTitle: 'versify',
         booklist: books
     })
 });
