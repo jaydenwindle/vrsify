@@ -34,7 +34,8 @@ var books = [
 
 // Routes
 app.get('/', function(req, res) {
-    res.render("index", {
+    res.render('index', {
+        pageTitle: 'versify'
         booklist: books
     })
 });
