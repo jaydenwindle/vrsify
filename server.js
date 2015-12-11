@@ -13,7 +13,7 @@ var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
 // Routes
 app.get('/', function(req, res) {
-    res.send("hello world")
+    res.send("this is vrsify")
 });
 
 app.get('/:book/:chapter/:verse?', function(req, res) {
