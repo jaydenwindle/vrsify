@@ -36,7 +36,7 @@ var books = [
 app.get('/', function(req, res) {
     res.render('index', {
         pageTitle: 'vrsify',
-        booklist: books
+        booklist: books,
     })
 });
 
@@ -61,17 +61,77 @@ app.get('/:book/:chapter/:verse?', function(req, res) {
     request('http://www.esvapi.org/v2/rest/passageQuery?' + querystring, function (error, response, body) {
         if (!error && response.statusCode == 200) {
 
+            // parsing chapter numbers
             $ = cheerio.load(body);
-
             $('.chapter-num').each(function(index, value) {
                 var num = $(this).text();
                 $(this).text(num.substr(num.length - 2));
             });
 
-            res.render('verse', {pageTitle: $('h2').text(), bible: $.html()})
+            verses = {};
+
+
+            // console.log($('p .verse-num'));
+
+            // $('')[0].nextSibling.nodeValue;
+
+            bible = $.html()
+
+            renderVerse(req, res)
         }
     });
 });
+
+function renderVerse(req, res, cb) {
+    if (bible.indexOf('ERROR') > -1) {
+        // verse not found
+        if (req.query.validate == 'true') {
+            // validate main page form submission
+            res.send('false');
+        } else {
+            // render not found page
+            res.render('404', {
+                message: "That's not a bible verse."
+            });
+        }
+    } else {
+        // verse found, return verse page
+        if (req.query.validate == 'true') {
+            // validate main page form submission
+            res.send('true');
+        } else {
+            // render verse page
+            if (req.query.img != undefined) {
+                // img is set, render with image
+                res.render('verse', {
+                    pageTitle: $('h2').text(),
+                    bible: $.html(),
+                    img: req.query.img
+                });
+            } else {
+                res.render('verse', {
+                    pageTitle: $('h2').text(),
+                    bible: $.html()
+                });
+            }
+        }
+    }
+    // cb();
+}
+
+// function getImage(url, callback) {
+//     // image handling (dev in progress)
+//
+//     request({url: url, encoding: null}, function (err, res, body) {
+//         if (!err && res.statusCode == 200) {
+//             // So as encoding set to null then request body became Buffer object
+//             var base64prefix = 'data:' + res.headers['content-type'] + ';base64,';
+//             var image = base64prefix + body.toString('base64')
+//             // console.log(image);
+//             callback(image);
+//         }
+//     });
+// }
 
 // Start app
 var server = app.listen(port, ip, function () {

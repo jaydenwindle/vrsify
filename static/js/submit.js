@@ -4,16 +4,26 @@ $(document).ready(function() {
         var book = $('select[name=book]').val();
         var chapter = $('input[name=chapter]').val();
         var verse = $('input[name=verse]').val();
+        var url;
 
-        url = '/' + book + '/' + chapter + '/' + verse
+        if (chapter == '') {
+            chapter = '1';
+        }
 
-        $.get(url, function(data) {
-            if (String(data).indexOf('ERROR:') > -1) {
-                alert("Sorry, that's not a bible verse.");
+        if (verse != '') {
+            // verse was inputted
+            url = '/' + book + '/' + chapter + '/' + verse
+        } else {
+            // verse not inputted
+            url = '/' + book + '/' + chapter
+        }
+
+        $.get(url + '?validate=true', function(data) {
+            if (data == 'false') {
+                alert('Sorry, that\'s not a verse in the bible.')
             } else {
                 window.location.href = url;
             }
         });
-        
     });
 });
