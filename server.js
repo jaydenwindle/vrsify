@@ -40,6 +40,10 @@ app.get('/', function(req, res) {
     })
 });
 
+app.get('/plans', function(req, res) {
+    res.render('plans');
+})
+
 app.get('/:book/:chapter/:verse?', function(req, res) {
     if (req.params.verse == undefined) {
         var passage = req.params.book + ' ' + req.params.chapter
