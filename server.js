@@ -45,6 +45,7 @@ app.get('/plans', function(req, res) {
 })
 
 app.get('/:book/:chapter/:verse?', function(req, res) {
+    console.log(req.protocol + '://' + req.get('host') + req.url);
     if (req.params.verse == undefined) {
         var passage = req.params.book + ' ' + req.params.chapter
     } else {
@@ -58,7 +59,8 @@ app.get('/:book/:chapter/:verse?', function(req, res) {
         'include-short-copyright': false,
         'include-headings': false,
         'include-subheadings': false,
-        'include-audio-link': false
+        'include-audio-link': false,
+        'include-word-ids': true
     }
     var querystring = qs.stringify(query);
 

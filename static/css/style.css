@@ -37,6 +37,10 @@ p, li{
     vertical-align: text-top;
 }
 
+.highlight {
+    background-color: rgba(255, 255, 0, 0.5);
+}
+
 input {
     width: 70px;
     text-align: center;
