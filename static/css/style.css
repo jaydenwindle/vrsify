@@ -26,8 +26,8 @@ p, li{
     line-height: 160%;
 }
 
-.esv {
-    margin-bottom: 10%;
+.esv-text {
+    margin-bottom: 71px;
 }
 
 .verse-num, .chapter-num {
@@ -35,6 +35,7 @@ p, li{
     font-family: 'Libre Baskerville', sans-serif;
     line-height: 160%;
     vertical-align: text-top;
+    margin-right: 3px;
 }
 
 .highlight {

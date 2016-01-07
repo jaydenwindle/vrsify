@@ -1,7 +1,15 @@
 extends ./layout.jade
 
 block content
-    != bible
+    div.esv-text
+        h2 
+            =pageTitle
+        p
+            each text, verse in bible
+                span(class='verse' id=verse)
+                    span(class='verse-num')=verse
+                    !=text 
+        
     if img
         div.bg
             div.overlay

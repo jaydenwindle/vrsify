@@ -46,6 +46,11 @@ app.get('/plans', function(req, res) {
 
 app.get('/:book/:chapter/:verse?', function(req, res) {
     console.log(req.protocol + '://' + req.get('host') + req.url);
+    // limit request to only one chapter
+    if (req.params.chapter.indexOf('-') > -1) {
+        req.params.chapter = req.params.chapter.substring(0, req.params.chapter.indexOf('-'));
+    }
+
     if (req.params.verse == undefined) {
         var passage = req.params.book + ' ' + req.params.chapter
     } else {
@@ -60,35 +65,69 @@ app.get('/:book/:chapter/:verse?', function(req, res) {
         'include-headings': false,
         'include-subheadings': false,
         'include-audio-link': false,
-        'include-word-ids': true
     }
     var querystring = qs.stringify(query);
 
+    console.time('api request');
     request('http://www.esvapi.org/v2/rest/passageQuery?' + querystring, function (error, response, body) {
         if (!error && response.statusCode == 200) {
-
-            // parsing chapter numbers
-            $ = cheerio.load(body);
-            $('.chapter-num').each(function(index, value) {
-                var num = $(this).text();
-                $(this).text(num.substr(num.length - 2));
-            });
-
-            verses = {};
-
-
+            console.timeEnd('api request');
+            parsePassage(body, function(data, verses) {
+                renderPassage(req, res, data, verses)
+            })
             // console.log($('p .verse-num'));
 
             // $('')[0].nextSibling.nodeValue;
-
-            bible = $.html()
-
-            renderVerse(req, res)
         }
     });
 });
 
-function renderVerse(req, res, cb) {
+function parsePassage(data, cb) {
+    var verses = {};
+
+    $ = cheerio.load(data);
+    console.time('parsing verse');
+    // parsing chapter numbers
+    $('.chapter-num').each(function(index, value) {
+        var num = $(this).text();
+        $(this).text(num.substr(num.length - 2));
+    });
+
+    // get verse numbers
+    var verseNumSpans = $('.chapter-num, .verse-num');
+    var vNums = [];
+    verseNumSpans.each(function() {
+        vNums.push($(this).text().trim());
+    });
+
+    // Get passage text
+    var text = $('.esv-text').text();
+    text = text.replace(/\n\n/gm,"\n");
+    text = text.replace(/\n/gm,"<br>");
+    text = text.replace(/\u00a0/g, ' ');
+
+    for (var i = 0; i < vNums.length; i++) {
+        if (i != vNums.length - 1) {
+            // all but last verse, handle normally
+            verses[vNums[i]] = text.substring(text.indexOf(vNums[i]), text.indexOf(vNums[i + 1]));
+        } else {
+            // last verse, get text to end
+            verses[vNums[i]] = text.substring(text.indexOf(vNums[i]));
+        }
+        // strip numbers from start of verse text
+        verses[vNums[i]] = verses[vNums[i]].substr(String(vNums[i]).length);
+        // deal with spaces at start and end of verse
+        verses[vNums[i]] = verses[vNums[i]].trim();
+        verses[vNums[i]] = verses[vNums[i]] + ' ';
+    }
+
+
+    console.timeEnd('parsing verse');
+    cb(data, verses);
+}
+
+function renderPassage(req, res, data, verses) {
+    bible = data
     if (bible.indexOf('ERROR') > -1) {
         // verse not found
         if (req.query.validate == 'true') {
@@ -111,13 +150,13 @@ function renderVerse(req, res, cb) {
                 // img is set, render with image
                 res.render('verse', {
                     pageTitle: $('h2').text(),
-                    bible: $.html(),
+                    bible: verses,
                     img: req.query.img
                 });
             } else {
                 res.render('verse', {
                     pageTitle: $('h2').text(),
-                    bible: $.html()
+                    bible: verses
                 });
             }
         }
