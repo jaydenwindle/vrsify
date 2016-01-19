@@ -2,30 +2,33 @@ $(document).ready(function() {
 
     // handle highlights in url
     var hl = getQueryList().hl;
-    var v, s, e;
-    for (var i = 0; i < hl.length; i++) {
-        v = hl[i].split(':')[0];
-        s = hl[i].split(':')[1].split('-')[0];
-        e = hl[i].split(':')[1].split('-')[1];
-        console.log(v, s, e);
-    }
+    // if (hl) {
+    //     for (var i = 0; i < hl.length; i++) {
+    //         console.log($('#' + hl[i][0])[0].childNodes[1].firstChild);
+    //         var range = document.createRange(
+    //             $('#' + hl[i][0])[0].childNodes[1].firstChild, // start text node
+    //             hl[i][1], // start offset
+    //             $('#' + hl[i][2])[0].childNodes[1].firstChild, // end text node
+    //             hl[i][3] // end offset
+    //         );
+    //         highlight(range);
+    //     }
+    // }
 
     // handle user highlighting
     $('.esv-text').mouseup(function() {
         var sel = window.getSelection();
         var range = sel.getRangeAt(0);
-        var node = document.createElement('span');
-        node.className = 'highlight';
-        range.surroundContents(node)
-        // if (sel.toString() != '') {
-        //     // something is highlighted
-        //     console.log(range.startContainer, range.startOffset, range.endOffset);
-        //     highlight(range.startContainer.parentNode.parentNode.id, range.endContainer.parentNode.parentNode.id, range.startOffset, range.endOffset);
-        //     document.getSelection().empty();
-        // } else {
-        //     // nothing selected, clear all highlights
-        //     console.log($('.highlight').children()[0]);
-        // }
+        console.log(range);
+        var hl = []
+        highlight(range)
+        hl.push([
+            range.startContainer.parentElement.parentElement.id,
+            range.startOffset,
+            range.endContainer.parentElement.id,
+            range.endOffset
+        ]);
+        // window.location.replace(window.location.href + '?hl=' + JSON.stringify(hl))
     })
 })
 
@@ -42,43 +45,9 @@ function getQueryList(){
     return queryList;
 }
 
-function highlight(startId, endId, start, end) {
-    var verse, vs, ve
-    if (startId != endId) {
-        vs = $('#' + startId).children('.verse-text').html();
-        vs = vs.slice(0, start) + '<span class="highlight">' + vs.slice(start) + '</span>';
-        console.log(vs);
-        $('#' + startId).children('.verse-text').html(vs);
-
-        for (var i = Number(startId) + 1; i < endId; i++) {
-            verse = $('#' + i).children('.verse-text').html();
-            verse = '<span class="highlight">' + verse + '</span>'
-            console.log(verse);
-            $('#' + i).children('.verse-text').html(verse);
-        }
-
-        ve = $('#' + endId).children('.verse-text').html();
-        ve = '<span class="highlight">' + ve.slice(0, end) + '</span>' + ve.slice(end);
-        $('#' + endId).children('.verse-text').html(ve);
-        console.log(ve);
-    } else {
-        vs = $('#' + startId).children('.verse-text').html();
-        vs = vs.slice(0, start) + '<span class="highlight">' + vs.slice(start, end) + '</span>' + vs.slice(end);
-        console.log(vs);
-        $('#' + startId).children('.verse-text').html(vs);
-    }
-
-
-
-    // txt = verse.html();
-    // before = txt.slice(0, start);
-    // if (end > txt.length) {
-    //     end = txt.length;
-    //     after = '';
-    // } else {
-    //     after = txt.slice(end);
-    // }
-    // hl = txt.slice(start, end);
-    //
-    // verse.html(before + '<span class="highlight">' + hl + '</span>' + after);
+function highlight(range) {
+    var node = document.createElement('span');
+    node.className = 'highlight';
+    node.appendChild(range.extractContents());
+    range.insertNode(node);
 }
