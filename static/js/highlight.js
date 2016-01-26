@@ -1,14 +1,14 @@
 $(document).ready(function() {
 
     // handle highlights in url
-    var hl = getQueryList().hl;
+    // var hl = getQueryList().hl;
     // if (hl) {
     //     for (var i = 0; i < hl.length; i++) {
-    //         console.log($('#' + hl[i][0])[0].childNodes[1].firstChild);
+    //         console.log(document.getElementById(hl[i][0]).childNodes[1].firstChild);
     //         var range = document.createRange(
-    //             $('#' + hl[i][0])[0].childNodes[1].firstChild, // start text node
+    //             document.getElementById(hl[i][0]).childNodes[1].firstChild, // start text node
     //             hl[i][1], // start offset
-    //             $('#' + hl[i][2])[0].childNodes[1].firstChild, // end text node
+    //             document.getElementById(hl[i][2]).childNodes[1].firstChild, // end text node
     //             hl[i][3] // end offset
     //         );
     //         highlight(range);
@@ -22,12 +22,15 @@ $(document).ready(function() {
         console.log(range);
         var hl = []
         highlight(range)
-        hl.push([
-            range.startContainer.parentElement.parentElement.id,
-            range.startOffset,
-            range.endContainer.parentElement.id,
-            range.endOffset
-        ]);
+        // hl.push([
+        //     range.startContainer.parentElement.parentElement.id,
+        //     range.startOffset,
+        //     range.endContainer.parentElement.id,
+        //     range.endOffset
+        // ]);
+        // var id = range.startContainer.parentElement.parentElement.id;
+        // console.log(document.getElementById(id).childNodes[1].firstChild);
+        // console.log(hl);
         // window.location.replace(window.location.href + '?hl=' + JSON.stringify(hl))
     })
 })
