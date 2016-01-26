@@ -57,6 +57,7 @@ app.get('/:book/:chapter/:verse?', function(req, res) {
         var passage = req.params.book + ' ' + req.params.chapter + ':' + req.params.verse
     }
     console.log(passage);
+    // build query string
     var query = {
         'key': 'IP',
         'passage': passage,
@@ -75,9 +76,6 @@ app.get('/:book/:chapter/:verse?', function(req, res) {
             parsePassage(body, function(data, verses) {
                 renderPassage(req, res, data, verses)
             })
-            // console.log($('p .verse-num'));
-
-            // $('')[0].nextSibling.nodeValue;
         }
     });
 });
@@ -102,10 +100,11 @@ function parsePassage(data, cb) {
 
     // Get passage text
     var text = $('.esv-text').text();
-    text = text.replace(/\n\n/gm,"\n");
-    text = text.replace(/\n/gm,"<br>");
-    text = text.replace(/\u00a0/g, ' ');
+    text = text.replace(/\n\n/gm,"\n"); // replace double newline with single newline
+    text = text.replace(/\n/gm,"<br>"); // replace newlines with break tags
+    text = text.replace(/\u00a0/g, ' '); // the api returns some weird space characters, so change to normal space
 
+    // for each verse
     for (var i = 0; i < vNums.length; i++) {
         if (i != vNums.length - 1) {
             // all but last verse, handle normally
@@ -164,6 +163,7 @@ function renderPassage(req, res, data, verses) {
     // cb();
 }
 
+// TODO: finish implementing custom backgrounds
 // function getImage(url, callback) {
 //     // image handling (dev in progress)
 //
