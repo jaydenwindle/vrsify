@@ -8,8 +8,7 @@ var app = express();
 app.set('view engine', 'jade');
 app.use(express.static('static'));
 
-var port = process.env.OPENSHIFT_NODEJS_PORT || 8080
-var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+var port = process.env.PORT || 8080
 
 // Data
 var books = [
@@ -179,7 +178,7 @@ function renderPassage(req, res, data, verses) {
 // }
 
 // Start app
-var server = app.listen(port, ip, function () {
+var server = app.listen(port, function () {
   var host = server.address().address;
   var port = server.address().port;
 
