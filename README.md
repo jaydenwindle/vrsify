@@ -7,6 +7,8 @@ If you're a dev and want to fiddle around with it, feel free! PRs are always app
 
 ### Setting up a local dev environment
 
+Make sure you have nodejs and npm installed first.
+
 1) clone the repo
 
 `git clone https://github.com/jaydenwindle/vrsify.git`
